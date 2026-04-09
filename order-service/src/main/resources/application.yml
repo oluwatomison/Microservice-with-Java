@@ -1,0 +1,91 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    # The correct, modern driver class name for MySQL 8+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/order-service
+    username: root
+    password: mysql
+  jpa:
+    hibernate:
+      ddl-auto: update
+  
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: "localhost:9092"
+#    configure the order service to use the same key and value serializers
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#       Doing this to allow knowing where to send the message
+    properties:
+      spring.json.type.mapping: event:com.learningTutorial.order_service.event.OrderPlacedEvent
+      spring.json.trusted.packages: "com.learningTutorial.*"
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# Actuator Configuration
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+  tracing:
+    sampling:
+      probability: 1.0
+    export:
+      zipkin:
+       endpoint: http://localhost:9411/api/v2/spans
+
+# Logging pattern with trace information
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+
+# Resilience 4j Circuit Breaker Configuration
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+    instances:
+      inventory:
+        baseConfig: default
+# Rate Limiter Configuration
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 3s
+    instances:
+      inventory:
+        baseConfig: default
+#  Retry configuration for Inventory Service 3 times
+  retry:
+    instances:
+      inventory:
+        maxAttempts: 3
+        waitDuration: 5s

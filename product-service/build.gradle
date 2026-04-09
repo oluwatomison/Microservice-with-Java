@@ -1,0 +1,58 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.learningTutorial'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+
+ext {
+	set('springCloudVersion', "2025.1.1")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+//	Adding Kafka for notification when product is fetched
+	implementation 'org.springframework.boot:spring-boot-starter-kafka'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation "org.testcontainers:testcontainers:2.0.4"
+    testImplementation "org.testcontainers:testcontainers-mongodb:2.0.4"
+    testImplementation "org.testcontainers:testcontainers-junit-jupiter:2.0.4"
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	// Micrometer Tracing (replaces Sleuth in Spring Boot 3+) for distributed tracing
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	implementation 'org.springframework.boot:spring-boot-starter-zipkin'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

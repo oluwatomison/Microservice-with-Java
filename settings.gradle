@@ -1,0 +1,10 @@
+// Give your whole system a name
+rootProject.name = 'ecommerce-system'
+
+// Tell Gradle which modules belong to this system
+include 'product-service'
+include 'order-service'
+include 'inventory-service'
+include 'discovery-service'
+include 'api-gateway'
+include 'notification-service'

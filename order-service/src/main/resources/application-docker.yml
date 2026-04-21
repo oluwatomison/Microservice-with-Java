@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active: docker
+  datasource:
+    url: jdbc:postgresql://postgres:5431/order-service
+    username: root
+    password: mysql
+    driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap-servers: kafka:29092
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-server:8761/eureka/
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    export:
+      zipkin:
+        endpoint:  http://zipkin:9411

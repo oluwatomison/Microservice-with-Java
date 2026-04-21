@@ -1,0 +1,15 @@
+services:
+  order-service:
+    container_name: order-service
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-order:5431/order-service
+    depends_on:
+      - postgres-order
+      - kafka
+      - zipkin
+      - discovery-server
+      - api-gateway

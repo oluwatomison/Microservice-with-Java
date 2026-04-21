@@ -1,0 +1,13 @@
+services:
+  discovery-server:
+    container_name: discovery-server
+    build:
+      context: ./discovery-service
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8761:8761"
+    depends_on:
+      - zipkin
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker

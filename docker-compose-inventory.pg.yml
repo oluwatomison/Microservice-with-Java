@@ -1,0 +1,14 @@
+services:
+  postgres-inventory:
+    container_name: postgres-inventory
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: inventory-service
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: mysql
+      PGDATA: /data/postgres
+    volumes:
+      - ./postgres-inventory:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped

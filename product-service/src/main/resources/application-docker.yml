@@ -1,0 +1,18 @@
+server:
+  port: 0
+spring:
+  mongodb:
+      host: mongodb
+      port: 27017
+      database: product-service
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-server:8761/eureka/
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    export:
+      zipkin:
+        endpoint:  http://zipkin:9411/api/v2/spans

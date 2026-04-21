@@ -37,7 +37,7 @@ class ProductServiceApplicationTests {
     @Autowired
     private MockMvc mockMvc; // Injecting the MockMvc object to test the REST API
     @Autowired
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper; // Injecting the ObjectMapper to convert the ProductRequest to JSON
     @Autowired
     private ProductRespository productRepository;
 
@@ -56,6 +56,7 @@ class ProductServiceApplicationTests {
         ProductRequest productRequest = getProductRequest();
         // Converting the product request to JSON using jackson
         String productRequestString = objectMapper.writeValueAsString(productRequest);
+        // URLS have a separate class with a list of urls.
         mockMvc.perform(MockMvcRequestBuilders.post("/api/product")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(productRequestString) // Accepts string

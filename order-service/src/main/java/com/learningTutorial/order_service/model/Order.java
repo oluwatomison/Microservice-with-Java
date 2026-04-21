@@ -20,6 +20,6 @@ public class Order {
     private Long id;
     private String OrderNumber;
     @OneToMany(cascade = CascadeType.ALL) // CascadeType.ALL means that all the operations will be performed on the related entity
-    private List<OrderLineItems> orderLineItemsList;
+    private List<OrderLineItems> orderLineItemsList; // Work on the naming convention
 
 }

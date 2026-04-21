@@ -3,7 +3,10 @@ gradlew.*
 *.log
 zipkin.*
 .gradle/
-gradle/
 build/
 .idea
 .DS_Store
+mongo-data/
+mysql_keycloak_data/
+postgres-order/
+postgres-inventory/

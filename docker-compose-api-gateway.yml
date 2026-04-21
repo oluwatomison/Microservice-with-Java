@@ -1,0 +1,22 @@
+services:
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8181:8082"
+    expose:
+      - "8181"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+    depends_on:
+      - zipkin
+      - discovery-server
+      - keycloak
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8181/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

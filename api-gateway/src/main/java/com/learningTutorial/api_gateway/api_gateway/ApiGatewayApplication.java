@@ -11,4 +11,10 @@ public class ApiGatewayApplication {
 		SpringApplication.run(ApiGatewayApplication.class, args);
 	}
 
+
+	// Look at streaming, input buffer, output buffer (file handling)
+	// Opening a socket
+	// Using Dates - Yoda time / date-time-api (May not be the best choice)
+	// Code organisation -  Using an Abstract class to isolate shared functionality. (Have 2 things that almost does the same thing)
+
 }

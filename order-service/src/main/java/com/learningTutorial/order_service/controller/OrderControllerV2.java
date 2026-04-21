@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/v2/api/order")
 @RequiredArgsConstructor // It creates a constructor parameter for the OrderService
-public class OrderController {
+public class OrderControllerV2 {
     // Injecting the OrderService
     private final OrderService orderService;
     @PostMapping  // Accepts OrderRequest from the controller
@@ -26,7 +26,7 @@ public class OrderController {
     @Retry(name = "inventory")
     public CompletableFuture<String> placeOrder(@RequestBody OrderRequest orderRequest){
         // Returning a CompletableFuture to indicate that the order is being processed asynchronously
-       return CompletableFuture.supplyAsync(() -> orderService.placeOrder(orderRequest));
+        return CompletableFuture.supplyAsync(() -> orderService.placeOrder(orderRequest));
     }
 
     public CompletableFuture<String> fallbackMethod(OrderRequest orderRequest, RuntimeException runtimeException){

@@ -1,0 +1,13 @@
+services:
+  notification-service:
+    container_name: notification-service
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - zipkin
+      - kafka
+      - discovery-server
+      - api-gateway

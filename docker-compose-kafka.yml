@@ -1,0 +1,31 @@
+services:
+  kafka:
+    image: apache/kafka:3.7.0
+    container_name: kafka-broker
+    ports:
+      - "9092:9092"
+    environment:
+      # 1. Added required Cluster ID
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+
+      # 2. Removed _CFG prefix from all variables
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: controller,broker
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+
+      # 3. Fixed Listeners (added PLAINTEXT_INTERNAL to LISTENERS and MAP)
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,PLAINTEXT_INTERNAL://:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+    volumes:
+      # 4. Updated volume mount path to the Apache default
+      - kafka_data:/tmp/kraft-combined-logs
+
+volumes:
+  kafka_data:
+    name: kafka_local_data
